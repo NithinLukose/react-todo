@@ -31,5 +31,5 @@ jobs:
           script: |
             cd /var/www/react-todo
             git pull origin main
-            npm install --production
+            npm install
             npm run build
