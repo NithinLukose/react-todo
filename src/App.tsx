@@ -4,6 +4,7 @@ import TodoLanding from "./Components/Pages/TodoLanding/index";
 const App: React.FC = () => {
   return (
     <div>
+      Hello world
       <TodoLanding />
     </div>
   );
