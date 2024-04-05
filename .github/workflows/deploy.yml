@@ -1,29 +1,35 @@
-name: CI/CD
+name: Deploy to Remote Server
 
-on: 
-  push: 
+on:
+  push:
     branches:
       - main
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
 
-    steps: 
-    - name: checkout code
-      uses: actions/checkout@v2
-    
-    - name: Install Dependencies
-      run: npm install
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-    - name: build
-      run: npm run build
+      - name: Install Node.js
+        uses: actions/setup-node@v2
 
-    - name: deploy
-      uses: easingthemes/ssh-deploy@v2.1.1
-      with: 
-        server: ${{ secrets.SERVER_IP }}
-        username: ${{ secrets.SERVER_USERNAME }}
-        key: ${{ secrets.SSH_PRIVATE_KEY }}
-        local_path: ./dist
-        remote_path: /var/www/react-todo 
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build
+        run: npm run build
+
+      - name: Deploy to Remote Server
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SERVER_IP }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd /var/www/react-todo
+            git pull origin main
+            npm install --production
+            npm run build
