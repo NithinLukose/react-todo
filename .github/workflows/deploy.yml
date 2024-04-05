@@ -1,0 +1,29 @@
+name: CI/CD
+
+on: 
+  push: 
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps: 
+    - name: checkout code
+      uses: actions/checkout@v2
+    
+    - name: Install Dependencies
+      run: npm install
+
+    - name: build
+      run: npm run build
+
+    - name: deploy
+      uses: easingthemes/ssh-deploy@v2.1.1
+      with: 
+        server: ${{ secrets.SERVER_IP }}
+        username: ${{ secrets.SERVER_USERNAME }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        local_path: ./dist
+        remote_path: /var/www/react-todo 
