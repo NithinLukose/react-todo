@@ -4,7 +4,7 @@ export enum TodoState {
   COMPLETED,
 }
 export interface Todo {
-  id: number;
+  id: string;
   todoState: TodoState;
   todoTitle: string;
   todoDesc: string;

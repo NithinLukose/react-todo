@@ -1,7 +1,8 @@
 {
   "compilerOptions": {
     "target": "es5" /* Specify ECMAScript target version */,
-    "module": "esnext" /* Specify module code generation */,
+    "module": "ES6" /* Specify module code generation */,
+    "moduleResolution": "node",
     "lib": [
       "dom",
       "dom.iterable",

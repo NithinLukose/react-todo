@@ -1,40 +1,38 @@
-import React from "react";
-import { Todo, TodoState } from "../../../types/todo";
+import React, { useState } from "react";
+import { useTodoStore } from "../../../store/todoStore";
+import { Todo } from "../../../types/todo";
+import Modal from "../../molecules/Modal/index";
+import CreateTodo from "../../organisms/CreateTodo/index";
 import Todos from "../../organisms/Todos/index";
 
 const currentDate = new Date();
 currentDate.setDate(currentDate.getDate() + 5);
-const todoList: Todo[] = [
-  {
-    id: 1,
-    todoState: TodoState.BACKLOG,
-    todoTitle: "Title 1",
-    todoDesc: "Title 1 desc",
-    todoDueDate: currentDate,
-    todoCreateDate: currentDate,
-  },
-  {
-    id: 2,
-    todoState: TodoState.BACKLOG,
-    todoTitle: "Title 2",
-    todoDesc: "Title 2 desc",
-    todoDueDate: currentDate,
-    todoCreateDate: currentDate,
-  },
-  {
-    id: 3,
-    todoState: TodoState.BACKLOG,
-    todoTitle: "Title 3",
-    todoDesc: "Title 3 desc",
-    todoDueDate: currentDate,
-    todoCreateDate: currentDate,
-  },
-];
 
 const TodoLanding = () => {
+  const [showCreateTodoModal, setShowCreateTodoModal] = useState(false);
+  const todoList = useTodoStore((state) => state.todoList);
+  const addTodo = useTodoStore((state) => state.addTodo);
+
+  const openCreateModal = () => {
+    setShowCreateTodoModal(true);
+  };
+  const createTodo = (todo: Todo) => {
+    addTodo(todo);
+    setShowCreateTodoModal(false);
+  };
   return (
     <div>
+      <button onClick={openCreateModal}>Create</button>
       <Todos todos={todoList} />
+      <Modal
+        isOpen={showCreateTodoModal}
+        onClose={() => setShowCreateTodoModal(false)}
+      >
+        <CreateTodo
+          createTodo={createTodo}
+          cancelCreation={() => setShowCreateTodoModal(false)}
+        />
+      </Modal>
     </div>
   );
 };
