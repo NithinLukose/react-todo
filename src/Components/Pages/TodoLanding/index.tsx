@@ -1,12 +1,11 @@
 import React, { useState } from "react";
 import { useTodoStore } from "../../../store/todoStore";
-import { Todo } from "../../../types/todo";
+import { Todo, TodoState } from "../../../types/todo";
 import Modal from "../../molecules/Modal/index";
 import CreateTodo from "../../organisms/CreateTodo/index";
+import StateColumn from "../../organisms/StateColumn";
 import Todos from "../../organisms/Todos/index";
-
-const currentDate = new Date();
-currentDate.setDate(currentDate.getDate() + 5);
+import { MainStatesContainer } from "./styles";
 
 const TodoLanding = () => {
   const [showCreateTodoModal, setShowCreateTodoModal] = useState(false);
@@ -23,7 +22,27 @@ const TodoLanding = () => {
   return (
     <div>
       <button onClick={openCreateModal}>Create</button>
-      <Todos todos={todoList} />
+      <MainStatesContainer>
+        <StateColumn
+          status={TodoState.BACKLOG}
+          todos={todoList.filter(
+            (todo) => todo.todoState === TodoState.BACKLOG
+          )}
+        />
+        <StateColumn
+          status={TodoState.INPROGRESS}
+          todos={todoList.filter(
+            (todo) => todo.todoState === TodoState.INPROGRESS
+          )}
+        />
+        <StateColumn
+          status={TodoState.COMPLETED}
+          todos={todoList.filter(
+            (todo) => todo.todoState === TodoState.COMPLETED
+          )}
+        />
+      </MainStatesContainer>
+
       <Modal
         isOpen={showCreateTodoModal}
         onClose={() => setShowCreateTodoModal(false)}

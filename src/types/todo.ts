@@ -3,6 +3,7 @@ export enum TodoState {
   INPROGRESS,
   COMPLETED,
 }
+
 export interface Todo {
   id: string;
   todoState: TodoState;

@@ -32,7 +32,12 @@ const CreateTodo: React.FC<Props> = ({ createTodo, cancelCreation }) => {
     createTodo(todo);
   };
   return (
-    <form>
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        handleTodoCreation(title, description, dueDate);
+      }}
+    >
       <CreateTodoForm>
         <label htmlFor="todo-title">Title</label>
         <input
@@ -65,15 +70,16 @@ const CreateTodo: React.FC<Props> = ({ createTodo, cancelCreation }) => {
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             setDueDate(e.target.value)
           }
+          required
         />
 
         <CreateTodoActionGroup>
           <input type="button" value="Cancel" onClick={cancelCreation} />
           <button
-            onClick={(e) => {
-              e.preventDefault();
-              handleTodoCreation(title, description, dueDate);
-            }}
+          // onClick={(e) => {
+          //   e.preventDefault();
+          //   handleTodoCreation(title, description, dueDate);
+          // }}
           >
             Create
           </button>

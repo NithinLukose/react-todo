@@ -7,12 +7,18 @@ interface TodoProps {
 }
 
 const TodoCard: React.FC<TodoProps> = ({ todo }) => {
-  const { todoTitle, todoState, todoDueDate } = todo;
+  const { todoTitle, todoDesc, todoDueDate } = todo;
+  const handleDragStart = (ev: React.DragEvent<HTMLDivElement>) => {
+    ev.dataTransfer.setData("todo", JSON.stringify(todo));
+  };
   return (
-    <TodoCardContainer>
+    <TodoCardContainer
+      draggable
+      onDragStart={(ev: React.DragEvent<HTMLDivElement>) => handleDragStart(ev)}
+    >
       <p>{todoTitle}</p>
-      <p>{todoState}</p>
-      <p>{todoDueDate.toLocaleString()}</p>
+      <p className="todo-description">{todoDesc}</p>
+      <p>{todoDueDate ? todoDueDate.toLocaleString() : "-"}</p>
     </TodoCardContainer>
   );
 };
